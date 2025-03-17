@@ -31,12 +31,14 @@ jobs:
           sudo rm -rf /usr/local/lib/android
           sudo apt-get clean
           docker system prune -af
+          
 
       - name: 1.2Push OpenWrt Official to myrepo
         run: |
           cd openwrt
           git remote add myrepo https://${{ secrets.GH_PAT }}@github.com/JianxSir/WrtSourceAll.git
-          git push -f myrepo HEAD:openwrt
+          # git push -f myrepo HEAD:openwrt
+          git push myrepo +HEAD:openwrt --no-thin
 
       - name: 2.1Clone ImmortalWrt
         run: git clone --depth=1 https://github.com/immortalwrt/immortalwrt.git immortalwrt
