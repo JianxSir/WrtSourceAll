@@ -1,0 +1,41 @@
+name: Sync OpenWrt Repositories
+
+on:
+  schedule:
+    - cron: '0 20 * * 5'  # 每 6 小时同步一次
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Target Repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]:Jianx"
+          git config --global user.email "github-actions[bot]@jianx70687547@gmail.com"
+
+      - name: Clone & Push OpenWrt Official
+        run: |
+          git clone --depth=1 https://github.com/openwrt/openwrt.git openwrt
+          cd openwrt
+          git remote add myrepo https://github.com/${{ github.repository }}.git
+          git push -f myrepo HEAD:openwrt
+
+      - name: Clone & Push ImmortalWrt
+        run: |
+          git clone --depth=1 https://github.com/immortalwrt/immortalwrt.git immortalwrt
+          cd immortalwrt
+          git remote add myrepo https://github.com/${{ github.repository }}.git
+          git push -f myrepo HEAD:immortalwrt
+
+      - name: Clone & Push Lede
+        run: |
+          git clone --depth=1 https://github.com/coolsnowwolf/lede.git lede
+          cd lede
+          git remote add myrepo https://github.com/${{ github.repository }}.git
+          git push -f myrepo HEAD:lede
