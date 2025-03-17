@@ -19,25 +19,31 @@ jobs:
           git config --global user.name "github-actions[bot]:Jianx"
           git config --global user.email "github-actions[bot]@jianx70687547@gmail.com"
 
-      - name: Clone & Push OpenWrt Official
+      - name: 1.1Clone OpenWrt Official
+        run: git clone --depth=1 https://github.com/openwrt/openwrt.git openwrt
+
+      - name: 1.2Push OpenWrt Official to myrepo
         run: |
-          git clone --depth=1 https://github.com/openwrt/openwrt.git openwrt
           cd openwrt
-          git remote add myrepo https://github.com/JianxSir/WrtSourceAll.git
+          git remote add myrepo https://${{ secrets.GH_PAT }}@github.com/JianxSir/WrtSourceAll.git
           git push -f myrepo HEAD:openwrt
 
-      - name: Clone & Push ImmortalWrt
-        run: |
-          git clone --depth=1 https://github.com/immortalwrt/immortalwrt.git immortalwrt
-          cd immortalwrt
-          git remote add myrepo https://github.com/JianxSir/WrtSourceAll.git
-          git push -f myrepo HEAD:immortalwrt
+      - name: 2.1Clone ImmortalWrt
+        run: git clone --depth=1 https://github.com/immortalwrt/immortalwrt.git immortalwrt
 
-      - name: Clone & Push Lede
+      - name: 2.2Push ImmortalWrt Official to myrepo
         run: |
-          git clone --depth=1 https://github.com/coolsnowwolf/lede.git lede
+          cd immortalwrt
+          git remote add myrepo https://${{ secrets.GH_PAT }}@github.com/JianxSir/WrtSourceAll.git
+          git push -f myrepo HEAD:immortalwrt
+          
+      - name: 3.1Clone Lede
+        run: git clone --depth=1 https://github.com/coolsnowwolf/lede.git lede
+
+      - name: 3.2Push Lede to myrepo
+        run: |
           cd lede
-          git remote add myrepo https://github.com/JianxSir/WrtSourceAll.git
+          git remote add myrepo https://${{ secrets.GH_PAT }}@github.com/JianxSir/WrtSourceAll.git
           git push -f myrepo HEAD:lede
           
       - name: Set up Git credentials
