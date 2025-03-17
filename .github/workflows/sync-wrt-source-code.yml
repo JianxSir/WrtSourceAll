@@ -26,6 +26,11 @@ jobs:
           cd openwrt
           git gc --prune=now
           git repack -a -d --depth=250 --window=250
+      - name: Free Disk Space
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo apt-get clean
+          docker system prune -af
 
       - name: 1.2Push OpenWrt Official to myrepo
         run: |
