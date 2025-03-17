@@ -21,6 +21,11 @@ jobs:
 
       - name: 1.1Clone OpenWrt Official
         run: git clone --depth=1 https://github.com/openwrt/openwrt.git openwrt
+      - name: Repack Git Objects
+        run: |
+          cd openwrt
+          git gc --prune=now
+          git repack -a -d --depth=250 --window=250
 
       - name: 1.2Push OpenWrt Official to myrepo
         run: |
